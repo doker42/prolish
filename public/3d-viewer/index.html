@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <script type="text/javascript" src="dep/jquery-3.4.1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="dep/importerapp.css">
+    <link rel="stylesheet" type="text/css" href="dep/floatingdialog.css">
+
+    <script type="text/javascript" src="dep/three.min.js"></script>
+    <script type="text/javascript" src="dep/jsmodeler.js"></script>
+    <script type="text/javascript" src="dep/jsmodeler.ext.three.js"></script>
+
+    <script type="text/javascript" src="dep/floatingdialog.js"></script>
+    <script type="text/javascript" src="dep/importerviewer.js"></script>
+    <script type="text/javascript" src="dep/importermenu.js"></script>
+    <script type="text/javascript" src="dep/importerapp.js"></script>
+
+    <title>Online 3D Viewer</title>
+
+</head>
+
+<body>
+	<div id="top"></div>
+
+	<div id="left">
+		<div id="menu"></div>
+	</div>
+
+	<canvas id="modelcanvas" width="0" height="0"></canvas>
+
+	<input type="file" id="file" style="display:none" multiple accept=".3ds,.obj,.stl,.off" />
+</body>
+</html>
