@@ -2,8 +2,13 @@
 .env.backup
 /node_modules
 /public/storage
+/public/hot
 /storage/*.key
+/public/uploads
+/public/images
 /vendor
+public/images/vendor/flag-icon-css/flags/4x3/et.svg
+public/potree/pointclouds/
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -11,3 +16,4 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.vagrant
