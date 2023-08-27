@@ -11,27 +11,7 @@
 |
 */
 
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use App\Mail\VerifyMail;
-
-Route::get('foo', function(){
-
-    dump('foo');
-
-    $user = User::find(3);
-    $token = $user->verifyUser->token;
-//    dd($token);
-//    dd(url('user/verify', '$user->verifyUser->token'));
-//    dd(url('user/verify', "$user->verifyUser->token"));
-//    dd(url('user/verify', [$user->verifyUser->token]));
-//    dd($user);
-
-    Mail::to('doker42@gmail.com')->send(new VerifyMail($user));
-//    Mail::to('no-reply@artreal.pl')->send(new VerifyMail($user));
-
-});
 
 Auth::routes();
 Route::get('user/verify/{token}', 'Auth\RegisterController@verifyUser');

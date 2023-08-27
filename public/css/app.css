@@ -16406,10 +16406,11 @@ input.form-control,
 .project_user_index .modal_scroll_cont,
 .project_items .modal_scroll_cont,
 .notification_page .modal_scroll_cont {
-  max-height: calc(100vh - 400px);
+  max-height: calc(100vh - 100px);
   overflow: hidden;
   display: block;
   overflow-y: auto;
+  height: 190px;
 }
 
 .user_index .customized_title,
