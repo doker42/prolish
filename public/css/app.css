@@ -17164,7 +17164,7 @@ input.form-control,
 .project_index .project_actions_holder a:active .add_doc_icon,
 .project_items .project_actions_holder a:hover .add_doc_icon,
 .project_items .project_actions_holder a:active .add_doc_icon {
-  background-image: url(/images/icons/add_doc_wite_icon.png);
+  background-image: url(/images/icons/add_doc_white_icon.png);
 }
 
 .project_index .project_actions_holder .btn,
