@@ -186,7 +186,8 @@ class ItemController extends Controller
                 if ($tab == 'google_disk') {
                     $query->where('view_url', 'like', 'https://docs.google.com/document%');
                 } else {
-                    $query->where('view_url', 'not like', 'https://docs.google.com/document%');
+                    $query->where('view_url', 'not like', 'https://docs.google.com/document%')
+                        ->orWhereNull('view_url');
                 }
             })->with('project')->with('url')->with('uploader')->orderBy($order_field, $order_dir);
 
@@ -275,7 +276,7 @@ class ItemController extends Controller
             $permissions = User::manager()->getUserRoles(Auth::user()->id);
         }
         if (isset($permissions['is_super_user']) && isset($permissions['is_super_user'])) {
-            dd(ProjectItem::get()->pluck('title'));
+//            dd(ProjectItem::get()->pluck('title'));
             exit();
             return ProjectItem::with('uploader')->get()->pluck('user_id','uploader.email');
         } else {

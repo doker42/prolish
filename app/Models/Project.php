@@ -73,6 +73,11 @@ class Project extends Model
         return Company::find($this->attributes['company_id']);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     public function items()
     {
         return $this->hasMany('App\Models\ProjectItem', 'project_id');
