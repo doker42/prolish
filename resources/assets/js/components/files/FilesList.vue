@@ -578,7 +578,7 @@
 
                                     <a v-if="gallery_extensions.includes(item.ext)" v-on:click.prevent="addToGallery(item)"
                                        href="#" data-toggle="modal" data-target="#moveGaleryModal" class="dropdown-item">
-                                        <i class="fa add-to-gallery text-danger"></i> {{ trans('custom.add_to_gallery')
+                                       <i class="fa fa-exchange add-to-project"></i> {{ trans('custom.add_to_gallery')
                                         }}
                                     </a>
 

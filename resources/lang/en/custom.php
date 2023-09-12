@@ -5,6 +5,7 @@ return [
     'all' => 'All',
     'no_results_by_your_request' => 'No results by your request',
     'project' => 'Project',
+    'add_to_gallery' => 'Add to gallery',
     'add_to_project' => 'Add to project',
     'create_new' => 'Create New',
     'favourite' => 'Favourite',

@@ -33,6 +33,10 @@
 
         window.publicUrl = "<?= env('APP_URL') ?>/public";
 
+        window.rebuildPageLoad = () => {};
+        window.clearmodalHash = () => {};
+        window.initiatePageLoad = () => {};
+
         @if (Auth::user())
         window.allowedDisplay = function (action, model = false, id = false) {
             var roles_permissions = <?php
