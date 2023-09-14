@@ -568,7 +568,6 @@ const app = new Vue({
         },
         markMenu(router){
             $('.navbar-laravel .favorites_icon.active, .navbar-laravel .garbage_icon.active').removeClass('active');
-            console.log(router.name);
             switch (router.name) {
                 case 'companyList':
                     setTimeout(() => {
