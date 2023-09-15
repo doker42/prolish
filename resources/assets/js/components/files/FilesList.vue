@@ -11,25 +11,25 @@
         <div class="row new_sort_view mb-4">
             <div class="row mx-3 mt-3" :class="show_filters?'':'tablet-desktop-view'">
 
-                <div :class="{ 'active' : order_data.field == 'title'}" class="sort_item">
+                <!-- <div :class="{ 'active' : order_data.field == 'title'}" class="sort_item">
                     <div  v-on:click="changeOrder('title')" class="sorting_title">{{ trans('custom.name') }}<i style="cursor:pointer"
                                                                                                                :class="{ 'sort' : typeof order_data.field !== 'title','sort-asc' : order_data.field === 'title' && order_data.dir === 'ASC' , 'sort-desc' : order_data.field === 'title' && order_data.dir === 'DESC'}"
                                                                                                                class="order-size"></i></div>
-                </div>
+                </div> -->
 
-                <div :class="{ 'active' : order_data.field == 'created_at'}" class="sort_item">
+                <!-- <div :class="{ 'active' : order_data.field == 'created_at'}" class="sort_item">
                     <div v-on:click="changeOrder('created_at')" class="sorting_date">{{ trans('custom.date') }}<i style="cursor:pointer"
                                                                                                                   :class="{ 'sort' : typeof order_data.field !== 'created_at','sort-asc' : order_data.field === 'created_at' && order_data.dir === 'ASC' , 'sort-desc' : order_data.field === 'created_at' && order_data.dir === 'DESC'}"
                                                                                                                   class="order-date"></i></div>
-                </div>
+                </div> -->
 
-                <div :class="{ 'active' : order_data.field == 'size'}" class="sort_item">
+                <!-- <div :class="{ 'active' : order_data.field == 'size'}" class="sort_item">
                     <div class="sorting_size"  v-on:click="changeOrder('size')">{{ trans('custom.size') }}<i style="cursor:pointer"
                                                                                                              :class="{ 'sort' : typeof order_data.field !== 'size','sort-asc' : order_data.field === 'size' && order_data.dir === 'ASC' , 'sort-desc' : order_data.field === 'size' && order_data.dir === 'DESC'}"
                                                                                                              class="order-size"></i></div>
-                </div>
+                </div> -->
 
-                <div v-if="tab != 'temp_files'" :class="is_super_user?'admin_view':''"  class="uploaders_file_filter">
+                <!-- <div v-if="tab != 'temp_files'" :class="is_super_user?'admin_view':''"  class="uploaders_file_filter">
                     <v-select :placeholder="trans('custom.project')"
                               :options="uploaders"
                               label="title"
@@ -71,7 +71,7 @@
                             <span>{{ option.list_title }}</span>
                         </template>
                     </v-select>
-                </div>
+                </div> -->
 
                 <div v-if="tab != 'temp_files'"  class="mt-2 sort_item tablet-desktop-view">
                     <div class="clear_filters"  v-on:click="clearFilters">{{ trans('custom.clear') }}</div>
@@ -85,6 +85,7 @@
         </div>
 
         <div class="tabs_container">
+            <div v-if="is_allowed_storage" class="questions"><a href="https://my3d.artreal.pro/webdav_instruction.pdf" target="_blank">?</a></div>
 
             <tabs :options="{ useUrlFragment: false }" ref="itemsTabs" @clicked="tabClicked" @changed="tabChanged">
                 <!-- Files tab -->
@@ -108,7 +109,6 @@
                        }"></span>
             </tabs>
 
-          <span class="questions"><a href="https://my3d.artreal.pro/webdav_instruction.pdf" target="_blank">?</a></span>
 <!--            <router-link v-if="tab != 'temp_files'"-->
 <!--                         :to="{name: 'addProjectItem', params: {id: 'choose', company_id: 'all', type:'choose'}}"-->
 <!--                         class="btn btn-success add_new_item">-->
@@ -123,16 +123,58 @@
         <div class="card items_container" v-if="tab != 'temp_files'">
             <table class="table table-striped" v-if="((uploading_file.in_process && uploading_file.type !='uploading_temp_storage') || file_items.data.length > 0)">
                 <thead>
-                <tr>
-                    <th width="5%"></th>
-                    <th class="tablet-desktop-view" width="10%"></th>
-                    <th class="tablet-desktop-view" width="35%"></th>
-                    <th class="mobile-view" width="35%"></th>
-                    <th class="tablet-desktop-view" width="35%"></th>
-                    <th class="mobile-view" width="10%"></th>
-                    <th class="mobile-view" width="39%"></th>
-                    <th class="text-center tablet-desktop-view"></th>
-                </tr>
+                    <tr>
+                        <th width="5%"></th>
+                        <th class="tablet-desktop-view nowrap" width="10%">
+                            <div :class="{ 'active': order_data.field == 'title' }" class="sort_item cursor-pointer">
+                                <div  v-on:click="changeOrder('title')" class="sorting_title">
+                                    {{ trans('custom.name') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'title', 'sort-asc': order_data.field === 'title' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'title' && order_data.dir === 'DESC' }" class="order-size"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="tablet-desktop-view nowrap" width="35%">
+                            <div :class="{ 'active': order_data.field == 'created_at' }" class="sort_item cursor-pointer">
+                                <div v-on:click="changeOrder('created_at')" class="sorting_date">
+                                    {{ trans('custom.date') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'created_at', 'sort-asc': order_data.field === 'created_at' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'created_at' && order_data.dir === 'DESC' }" class="order-date"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="tablet-desktop-view nowrap" width="35%">
+                            <div :class="{ 'active': order_data.field == 'size' }" class="sort_item cursor-pointer">
+                                <div class="sorting_size"  v-on:click="changeOrder('size')">
+                                    {{ trans('custom.size') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'size', 'sort-asc': order_data.field === 'size' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'size' && order_data.dir === 'DESC' }" class="order-size"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="mobile-view nowrap" width="35%">
+                            <div :class="{ 'active': order_data.field == 'title' }" class="sort_item cursor-pointer">
+                                <div  v-on:click="changeOrder('title')" class="sorting_title">
+                                    {{ trans('custom.name') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'title', 'sort-asc': order_data.field === 'title' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'title' && order_data.dir === 'DESC' }" class="order-size"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="mobile-view nowrap" width="10%">
+                            <div :class="{ 'active': order_data.field == 'created_at' }" class="sort_item cursor-pointer">
+                                <div v-on:click="changeOrder('created_at')" class="sorting_date">
+                                    {{ trans('custom.date') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'created_at', 'sort-asc': order_data.field === 'created_at' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'created_at' && order_data.dir === 'DESC' }" class="order-date"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="mobile-view nowrap" width="39%">
+                            <div :class="{ 'active': order_data.field == 'size' }" class="sort_item cursor-pointer">
+                                <div class="sorting_size"  v-on:click="changeOrder('size')">
+                                    {{ trans('custom.size') }}
+                                    <i :class="{ 'sort': typeof order_data.field !== 'size', 'sort-asc': order_data.field === 'size' && order_data.dir === 'ASC', 'sort-desc': order_data.field === 'size' && order_data.dir === 'DESC' }" class="order-size"></i>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="text-center tablet-desktop-view"></th>
+                    </tr>
                 </thead>
                 <tbody>
                 <template v-if="uploading_file.in_process && uploading_file.type !='uploading_temp_storage'">

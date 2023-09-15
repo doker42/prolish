@@ -36,6 +36,7 @@
         window.rebuildPageLoad = () => {};
         window.clearmodalHash = () => {};
         window.initiatePageLoad = () => {};
+        window.addHash = () => {};
 
         @if (Auth::user())
         window.allowedDisplay = function (action, model = false, id = false) {
