@@ -339,7 +339,7 @@ const app = new Vue({
                     break;
                 case 'companyCreate':
                     if (window.innerWidth > 680) {
-                        this.$router.push({name: 'companyList', params: {doc_hash: router.path, company_create: 1}});
+                        this.$router.push({name: 'companyCreate', params: {doc_hash: router.path, company_create: 1}});
                     }
                     break;
                 case 'editProject':
