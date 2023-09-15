@@ -1570,6 +1570,7 @@ input.form-control{
             overflow: hidden;
             display: block;
             overflow-y: auto;
+            padding-bottom: 20px;
         }
 
         .customized_title{
@@ -2155,7 +2156,7 @@ input.form-control{
         .project_actions_holder a:hover,
         .project_actions_holder a:active{
             .add_user_icon {
-                background-image: url(/images/icons/add_user_white_icon.png);
+                background-image: url(/images/icons/user-plus-white.svg);
             }
             .add_doc_icon{
                 background-image: url(/images/icons/add_doc_white_icon.png);
