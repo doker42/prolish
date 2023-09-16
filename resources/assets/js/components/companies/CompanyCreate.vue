@@ -58,7 +58,7 @@
                         </div>
                         <div class="upload_styled">
                             <simple-file-upload @uploaded="imageUploaded"></simple-file-upload>
-                            <span class="custom_upload_btn btn">{{ trans('custom.choose_logo') }}</span>
+                            <!-- <span class="custom_upload_btn btn">{{ trans('custom.choose_logo') }}</span> -->
                         </div>
                         <div class="row">
                             <div class="col-sm-12 form-group">

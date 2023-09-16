@@ -1,10 +1,16 @@
 <?php
 
 return [
+    'move' => 'Move',
+    'copy' => 'Copy',
+    'this_file_will_be_moved_to_a_chosen_project_and_erased_from_this_folder' => 'This file will be moved to a chosen project and erased from this folder',
+    'this_file_will_be_copied_to_a_chosen_project' => 'This file will be copied to a chosen project',
+    'folder' => 'Folder',
     'belongs_to' => 'Belongs to...',
     'all' => 'All',
     'no_results_by_your_request' => 'No results by your request',
     'project' => 'Project',
+    'add_to_gallery' => 'Add to gallery',
     'add_to_project' => 'Add to project',
     'create_new' => 'Create New',
     'favourite' => 'Favourite',
