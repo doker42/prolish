@@ -6,6 +6,7 @@
 /storage/*.key
 /public/uploads
 /public/images
+/public/css
 /vendor
 public/images/vendor/flag-icon-css/flags/4x3/et.svg
 public/potree/pointclouds/

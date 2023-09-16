@@ -7,16 +7,16 @@
 return [
 
     'notification' => [
-        'from' => 'notifications@my3d.cloud',
+        'from' => 'no-reply@artreal.pl',
     ],
     'support' => [
-        'from' => 'support@my3d.cloud',
+        'from' => 'no-reply@artreal.pl',
     ],
     'welcome' => [
-        'from' => 'hello@my3d.cloud',
+        'from' => 'no-reply@artreal.pl',
     ],
     'order' => [
-        'from' => 'order@my3d.cloud',
+        'from' => 'no-reply@artreal.pl',
     ],
 
 ];

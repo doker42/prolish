@@ -99,7 +99,8 @@ class Company extends Model
 
     public function getWebdavUrlAttribute()
     {
-        return env('NEXTCLOUD_API_URL').'/remote.php/dav/files/prod_polish_'.$this->attributes['id'];
+//        return env('NEXTCLOUD_API_URL').'/remote.php/dav/files/prod_polish_'.$this->attributes['id'];
+        return env('NEXTCLOUD_API_URL').'/remote.php/dav/files/admin2/';
     }
 
     public function getTemporaryFolderAttribute()
