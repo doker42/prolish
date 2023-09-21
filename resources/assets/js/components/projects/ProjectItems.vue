@@ -188,7 +188,7 @@
                                                 </a>
                                                 <template v-if="project.permissions.includes('project_files_manage')">
 
-                                                    <template v-if="item.status.split('||')[0] === 'custom.item_status_cc_converting'">
+                                                    <template v-if="item.status && item.status.split('||')[0] === 'custom.item_status_cc_converting'">
                                                         <div class="dropdown-item text-center">
                                                         <span v-tooltip="getConvertedTooltipText(item.status)" class="d-inline-block align-middle">
                                                             <tile></tile>
@@ -1312,6 +1312,9 @@
                 });
             },
             getConvertedTooltipText(status) {
+                if (!status) {
+                    return null;
+                }
                 const data = status.split("||");
 
                 if (data.length > 1) {

@@ -158,12 +158,12 @@
                     <ul class="navbar-nav mr-auto">
                         @auth
                             <li class="nav-item">
-                                <router-link :to="{name: 'index'}"  class="nav-link mr-0 " href=""><i class="projects_icon"></i>{{ __('custom.projects') }}</router-link>
+                                <router-link :to="{name: 'index'}"  class="nav-link project_nav mr-0 " href=""><i class="projects_icon"></i>{{ __('custom.projects') }}</router-link>
                             </li>
 
                             @if (Auth::user()->role == 'super_user' || Auth::user()->role == 'administrator')
                             <li class="nav-item">
-                                <router-link :to="{name: 'userList'}"  class="nav-link mr-0 ml-3" href=""><i class="users_icon"></i>{{ __('custom.users') }}</router-link>
+                                <router-link :to="{name: 'userList'}"  class="nav-link user_nav mr-0 ml-3" href=""><i class="users_icon"></i>{{ __('custom.users') }}</router-link>
                             </li>
                             @endif
                             <li class="nav-item">
@@ -172,7 +172,7 @@
 
                             </li>
                             <li class="nav-item">
-                                <router-link :to="{name: 'companyIndex'}"  class="nav-link mr-0 ml-3" href=""><i class="companies_icon"></i>{{ __('custom.companies') }}</router-link>
+                                <router-link :to="{name: 'companyIndex'}"  class="nav-link company_nav mr-0 ml-3" href=""><i class="companies_icon"></i>{{ __('custom.companies') }}</router-link>
                             </li>
 
                             <li class="nav-item map_item disabled">

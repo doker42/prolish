@@ -133,7 +133,7 @@ const app = new Vue({
     mounted() {
         if (window.authorised) {
             this.loadData();
-            this.markMenu(router);
+            this.markMenu(router && router.history && router.history.current);
 
             window.initiatePageLoad();
 
@@ -150,10 +150,6 @@ const app = new Vue({
                 this.windowSizeRedirect(to, from);
             })
 
-            router.afterEach((to, from) => {
-                this.markMenu(to);
-            })
-
             $('body').on('hidden.bs.modal', function(){
                 window.clearmodalHash();
                 window.rebuildPageLoad();
@@ -165,22 +161,6 @@ const app = new Vue({
                     this.loadData()
                 }, 5000);
             }
-
-            setTimeout(() => {
-                $('.router-link-exact-active').length > 0 ? $('.router-link-exact-active').addClass('custom_selected') : $('.router-link-active').length > 1?$('.router-link-active:not(.project_nav)').addClass('custom_selected'):$('.router-link-active').addClass('custom_selected');
-                if ($('.custom_selected:first').hasClass('project_nav')){
-                    $('.project_nav').addClass('custom_selected');
-                }
-                if ($('.custom_selected:first').hasClass('user_nav')){
-                    $('.user_nav').addClass('custom_selected');
-                }
-                if ($('.custom_selected:first').hasClass('file_nav')){
-                    $('.file_nav').addClass('custom_selected');
-                }
-                if ($('.custom_selected:first').hasClass('company_nav')){
-                    $('.company_nav').addClass('custom_selected');
-                }
-            }, 150);
 
             var  last_sent_activity = Date.now();
             var  last_active_stamp = Date.now();
@@ -567,36 +547,26 @@ const app = new Vue({
             }
         },
         markMenu(router){
-            $('.navbar-laravel .favorites_icon.active, .navbar-laravel .garbage_icon.active').removeClass('active');
-            switch (router.name) {
-                case 'companyList':
-                    setTimeout(() => {
-                        $('.custom_selected').removeClass('custom_selected');
-                        $('#app .company_nav').addClass('custom_selected');
-                    }, 250);
+            switch (router && router.name) {
+                case 'companyIndex':
+                    $('.custom_selected').removeClass('custom_selected');
+                    $('#app .company_nav').addClass('custom_selected');
                     break;
                 case 'userList':
-                    setTimeout(() => {
-                        $('.custom_selected').removeClass('custom_selected');
-                        $('#app .user_nav').addClass('custom_selected');
-                    }, 250);
+                    $('.custom_selected').removeClass('custom_selected');
+                    $('#app .user_nav').addClass('custom_selected');
                     break;
                 case 'filesList':
-                    setTimeout(() => {
-                        $('.custom_selected').removeClass('custom_selected');
-                        $('#app .file_nav').addClass('custom_selected');
-                    }, 250);
+                    $('.custom_selected').removeClass('custom_selected');
+                    $('#app .file_nav').addClass('custom_selected');
                     break;
                 case 'index':
                 case 'projectsIndex':
-                    setTimeout(() => {
-                        $('.custom_selected').removeClass('custom_selected');
-                        $('#app .project_nav').addClass('custom_selected');
-                    }, 250);
+                    $('.custom_selected').removeClass('custom_selected');
+                    $('#app .project_nav').addClass('custom_selected');
                     break;
                 default:
                     $('.custom_selected').removeClass('custom_selected');
-                    break;
             }
         },
         updateRegPhone(event){
