@@ -238,7 +238,7 @@
                     this.industries = response.data.data.industries;
                     this.employee_numbers = response.data.data.employee_number;
                     this.specializations_data = response.data.data.specializations;
-                    this.specializations = [];
+                    this.specializations = response.data.data.specializations.slice(0, 10);
                     setTimeout(function(){
                         $('.specialization_wrapp input').attr('placeholder', 'Type for search...');
                     }, 400);
@@ -259,10 +259,10 @@
                     return;
                 }
                 var val = $(this).val();
-                if (val != ''){
-                    let new_data = app.specializations_data.filter(function (specialization) {
-                        return specialization.title.toLowerCase().indexOf(val) !== -1
-                    });
+                let new_data = app.specializations_data.filter(function (specialization) {
+                    return specialization.title.toLowerCase().indexOf(val.toLowerCase()) !== -1
+                });
+                if (new_data.length > 0){
                     app.specializations = new_data.slice(0, 10);
                 } else {
                     app.specializations = [];

@@ -16193,8 +16193,6 @@ input.form-control,
   content: '';
   background: white;
   display: block;
-  height: 39px;
-  position: absolute;
   width: 5%;
   top: 32px;
   left: 16px;
@@ -16294,6 +16292,7 @@ input.form-control,
           box-shadow: 0px 3px 2px #e8e5d9;
   border-radius: 0.313rem;
   margin: 1em 0;
+  position: relative;
 }
 
 #app .file_index .tabs-component-tabs {
@@ -16406,11 +16405,11 @@ input.form-control,
 .project_user_index .modal_scroll_cont,
 .project_items .modal_scroll_cont,
 .notification_page .modal_scroll_cont {
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 400px);
   overflow: hidden;
   display: block;
   overflow-y: auto;
-  height: 190px;
+  padding-bottom: 50px;
 }
 
 .user_index .customized_title,
@@ -17156,8 +17155,7 @@ input.form-control,
 .project_index .project_actions_holder a:active .add_user_icon,
 .project_items .project_actions_holder a:hover .add_user_icon,
 .project_items .project_actions_holder a:active .add_user_icon {
-  /*background-image: url(/images/icons/add_user_wite_icon.png);*/
-  background-image: url(/images/icons/add_to_teambtn_white.svg);
+  background-image: url(/images/icons/user-plus-white.svg);
 }
 
 .project_index .project_actions_holder a:hover .add_doc_icon,
@@ -17209,8 +17207,6 @@ input.form-control,
 .project_index .project_actions_holder .add_user_icon,
 .project_items .project_actions_holder .add_user_icon {
   background-image: url(/images/icons/add_user_icon.png);
-  /*background-image: url(/images/icons/add_to_team_iconbtn_green.svg);*/
-  /*background-image: url(/images/icons/add_to_teambtn_white.svg);*/
   height: 17px;
   width: 20px;
   vertical-align: top;
@@ -17220,25 +17216,6 @@ input.form-control,
   margin-top: 3px;
   margin-right: 12px;
 }
-
-.project_index .project_actions_holder a:hover .add_user_icon,
-.project_items .project_actions_holder a:hover .add_user_icon {
-    /*background-image: url(/images/icons/add_to_team_iconbtn_white.svg);*/
-    background-image: url(/images/icons/user-plus-white.svg);
-    /*background-image: url(/images/icons/add_doc_icon.png);*/
-    height: 17px;
-    width: 20px;
-    vertical-align: top;
-    background-position: center center;
-    background-size: cover;
-    float: left;
-    margin-top: 3px;
-    margin-right: 12px;
-}
-
-
-
-
 
 .project_index .project_actions_holder .add_doc_icon,
 .project_items .project_actions_holder .add_doc_icon {
@@ -18770,8 +18747,9 @@ a:hover i.add_to_team_iconbtn {
 
 .questions {
   position: absolute;
-  left: 270px;
-  top: 60px;
+  left: 380px;
+  top: 5px;
+  z-index: 1000;
   height: 24px;
   width: 24px;
   line-height: 24px;
@@ -18784,5 +18762,9 @@ a:hover i.add_to_team_iconbtn {
 
 .questions a {
   color: #fff;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
