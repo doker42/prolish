@@ -6,7 +6,8 @@
 /storage/*.key
 /public/uploads
 /public/images
-/public/js
+/public/js/app.js
+/public/css/app.css
 /public/potree
 /vendor
 public/images/vendor/flag-icon-css/flags/4x3/et.svg
