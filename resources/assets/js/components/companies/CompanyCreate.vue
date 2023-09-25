@@ -29,6 +29,7 @@
                                         label="title"
                                         index="id"
                                         :clearable="false"
+                                        :placeholder="isListLoading ? 'Loading...' : isListError ? 'Cannot get any industry...' : 'Type for search...'"
                                 ></v-select>
                             </div>
                         </div>
@@ -41,7 +42,8 @@
                                         label="title"
                                         index="id"
                                         @input="addSpecializationItem"
-                                        :clearable="true"
+                                        :clearable="false"
+                                        :placeholder="isListLoading ? 'Loading...' : isListError ? 'Cannot get any specialization...' : 'Type for search...'"
                                 ></v-select>
                                 <div class="selected_values"></div>
                             </div>
@@ -53,6 +55,7 @@
                                         label="title"
                                         index="id"
                                         :clearable="false"
+                                        :placeholder="isListLoading ? 'Loading...' : isListError ? 'Cannot get any employee...' : 'Type for search...'"
                                 ></v-select>
                             </div>
                         </div>
@@ -177,6 +180,8 @@
     export default {
         data: function () {
             return {
+                isListLoading: true,
+                isListError: false,
                 company: {
                     title: '',
                     description: '',
@@ -205,7 +210,6 @@
                 user:{
                     role:'',
                 },
-
                 memberships: [],
                 allowedDisplay: function(action, model=false, id=false) {
                     return window.allowedDisplay(action, model, id)
@@ -214,6 +218,7 @@
         },
 
         mounted() {
+            // $('.specialization_wrapp input').attr('placeholder', 'Loading...');
             var app = this;
             axios.get('/api/v1/user')
                 .then((resp) => {
@@ -239,18 +244,13 @@
                     this.employee_numbers = response.data.data.employee_number;
                     this.specializations_data = response.data.data.specializations;
                     this.specializations = response.data.data.specializations.slice(0, 10);
-                    setTimeout(function(){
-                        $('.specialization_wrapp input').attr('placeholder', 'Type for search...');
-                    }, 400);
-                });
+                    this.isListLoading = false;
+                })
+                .catch(() => this.isListError = false);
 
             setTimeout(function(){
                 $('.specialization_wrapp .vs__actions .clear').click();
             }, 100);
-
-            setTimeout(function(){
-                $('.specialization_wrapp input').attr('placeholder', 'Type for search...');
-            }, 400);
 
 
             $('body').on('keyup', '.specialization_wrapp input[type="search"]', function (event) {
