@@ -57,7 +57,8 @@
                                                             <i class="plus_icon"></i> {{ trans('custom.add_user') }}
                                                         </router-link>
 
-                                                        <div class="dropdown" v-if="allowedDisplay('all') || allowedDisplay('company_edit', 'company', company.id) || !company.is_member">
+<!--                                                        <div class="dropdown" v-if="allowedDisplay('all') || allowedDisplay('company_edit', 'company', company.id) || !company.is_member>-->
+                                                        <div class="dropdown" v-if="company.can_delete">
                                                             <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"
                                                                     aria-haspopup="true" aria-expanded="false">
                                                                 {{ trans('custom.actions') }}

@@ -12,6 +12,7 @@ use App\Models\AdditionalUserCompanies;
 use App\Models\Company;
 use App\Models\Industry;
 use App\Models\Invitation;
+use App\Models\ProjectGalleryImage;
 use App\Models\ProjectVisibility;
 use App\Models\Specialization;
 use App\Models\User;
@@ -22,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InviteToCompanyNotify;
@@ -205,16 +208,15 @@ class CompanyController extends Controller
         $company = Company::create($request->all());
         $company->specializations()->attach($request->get('specialization'));
 
-        CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
+//        CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
 
+        try {
+            Company::manager()->initiateNextCloud($company, true);
+            Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
 
-//        try {
-//            Company::manager()->initiateNextCloud($company, true);
-//            Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
-//
-//        } catch (\Exception $e) {
-//            Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
-//        }
+        } catch (\Exception $e) {
+            Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
+        }
 
         if (empty($users_own_company)){
             $current_role = $user->role;
@@ -524,16 +526,11 @@ class CompanyController extends Controller
                 'type' => 'existing_user',
             ]));
 
-            CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
-
-//            try {
-//                Company::manager()->initiateNextCloud($company, true);
-//
-//                Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
-//
-//            } catch (\Exception $e) {
-//                Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
-//            }
+            try {
+                Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
+            } catch (\Exception $e) {
+                Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
+            }
 
         } else {
 
@@ -589,6 +586,99 @@ class CompanyController extends Controller
             'result' => true,
             'data' => json_encode($companies),
         ]);
+    }
+
+    public function deleteTempFile(Request $request)
+    {
+        $path = $request->get('path', false);
+        $webdav = Session::get('web_dav');
+        if ($path && !empty($webdav) && $webdav->has($path)){
+            $webdav->delete($path);
+            return ['message' => 'success'];
+        } else {
+            return response()->json(['errors'=>trans('custom.error_occured')], 403);
+        }
+
+    }
+
+    public function moveTempFile(Request $request)
+    {
+        $path = $request->get('path', false);
+        $project_id = $request->get('project_id', false);
+        $delete_source = $request->get('delete_source', true);
+        $project = Project::find($project_id);
+        $webdav = Session::get('web_dav');
+        $files_list  = Company::manager()->getTemporaryFiles(Auth::user()->company_id && !empty($webdav));
+        if ($path && !empty($project) && array_key_exists($path, $files_list)){
+            if($project->company_id == Auth::user()->company_id && !$delete_source) {
+                $membership_limits = Company::manager()->checkAddingResult($project->company_id, 'space', intval($webdav->has($path)['size']));
+                if (!$membership_limits['result']) {
+                    return response()->json($membership_limits, 403);
+                }
+            }
+
+            $filename = pathinfo($path, PATHINFO_BASENAME);
+            $filepath ='/uploads/documents/' . $project_id . '/';
+
+            if (Storage::disk('local')->exists($filepath.$filename)) {
+                $filename = pathinfo($filename, PATHINFO_FILENAME) . '-' . uniqid() . '.' . pathinfo($path, PATHINFO_EXTENSION);
+            }
+            Storage::disk('local')->put($filepath . $filename, $webdav->read($path)['contents']);
+            if($delete_source){
+                $webdav->delete($path);
+            }
+            return response()->json([
+                'result' => true,
+                'new_file' => $filepath.$filename,
+            ]);
+
+        } else {
+            return response()->json(['errors'=>trans('custom.error_occured')], 403);
+        }
+
+    }
+
+
+    public function moveTempFileGallery(Request $request)
+    {
+        $path = $request->get('path', false);
+        $project_id = $request->get('project_id', false);
+        $folder_id = $request->get('folder_id', null);
+        $folder_id = $folder_id != 0 ?: null;
+        $delete_source = $request->get('delete_source', true);
+        $project = Project::find($project_id);
+        $webdav = Session::get('web_dav');
+        $files_list  = Company::manager()->getTemporaryFiles(Auth::user()->company_id);
+        if ($path && !empty($project) && array_key_exists($path, $files_list)){
+            if ($project->company_id == Auth::user()->company_id && !$delete_source) {
+                $membership_limits = Company::manager()->checkAddingResult($project->company_id, 'space', intval($webdav->has($path)['size']));
+                if (!$membership_limits['result']) {
+                    return response()->json($membership_limits, 403);
+                }
+            }
+
+            $filename = pathinfo($path, PATHINFO_BASENAME);
+            $filepath ='/images/';
+
+            if (Storage::disk('local')->exists($filepath . $filename)) {
+                $filename = pathinfo($filename, PATHINFO_FILENAME) . '-' . uniqid() . '.' . pathinfo($path, PATHINFO_EXTENSION);
+            }
+
+            Storage::disk('local')->put($filepath . $filename, $webdav->read($path)['contents']);
+            if ($delete_source){
+                $webdav->delete($path);
+            }
+            ProjectGalleryImage::create([
+                'project_id' => $project_id,
+                'url' => $filepath . $filename,
+                'folder_id' => $folder_id,
+            ]);
+            return ['message' => 'success'];
+
+        } else {
+            return response()->json(['errors'=>trans('custom.error_occured')], 403);
+        }
+
     }
 
 }

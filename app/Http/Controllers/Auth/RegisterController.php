@@ -161,17 +161,16 @@ class RegisterController extends Controller
 
             Mail::to($user->email)->send(new VerifyMail($user));
 
-            CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
+//            CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
 
+            try {
+                Company::manager()->initiateNextCloud($company, true);
 
-//            try {
-//                Company::manager()->initiateNextCloud($company, true);
-//
-//                Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
-//
-//            } catch (\Exception $e) {
-//                Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
-//            }
+                Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
+
+            } catch (\Exception $e) {
+                Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
+            }
         }
 
         $user->job_title = $data['job_title'];

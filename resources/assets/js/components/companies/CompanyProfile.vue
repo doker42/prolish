@@ -39,25 +39,27 @@
                                     <router-link :to="{name: 'companyUsers', params: {id: company.id}}" class="btn btn-xs btn-success">
                                         <i class="plus_icon"></i> {{ trans('custom.add_user') }}
                                     </router-link>
-                                    <div class="dropdown">
-                                        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                            {{ trans('custom.actions') }}
-                                        </button>
-                                        <div class="dropdown-menu">
 
 
+<!--                                    <div v-if="company.can_delete" class="dropdown">-->
+<!--                                        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"-->
+<!--                                                aria-haspopup="true" aria-expanded="false">-->
+<!--                                            {{ trans('custom.actions') }}-->
+<!--                                        </button>-->
+<!--                                        <div class="dropdown-menu">-->
 <!--                                            <router-link :to="{name: 'companyEdit', params: {id: company.id}}"-->
 <!--                                                         class=""><i class="edit_icon"></i>  {{ trans('custom.edit') }}-->
 <!--                                            </router-link>-->
 
-                                            <a v-if="company.can_delete"
-                                               v-on:click.prevent="deleteEntry(company.id)" class="" href="#"><i class="delete_icon"></i>
-                                                {{ trans('custom.delete') }}
-                                            </a>
+<!--                                            <a v-if="company.can_delete"-->
+<!--                                               v-on:click.prevent="deleteEntry(company.id)" class="" href="#"><i class="delete_icon"></i>-->
+<!--                                                {{ trans('custom.delete') }}-->
+<!--                                            </a>-->
 
-                                        </div>
-                                    </div>
+<!--                                        </div>-->
+<!--                                    </div>-->
+
+
                                 </div>
                                 <!--
                                                                 <router-link :to="{name: 'companyUsers', params: {id: company.id}}" class="btn btn-xs btn-default btn-success">

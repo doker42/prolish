@@ -181,6 +181,8 @@ Route::middleware('auth')->group(function($route) {
             $route->put('{id}/user/{user_id}', 'CompanyController@change_user_role');
             $route->delete('{id}/visibility_leave', 'CompanyController@leaveCompany');
             $route->get('temp_files', 'CompanyController@indexTempFiles');
+            $route->post('storage_file_to_project', 'CompanyController@moveTempFile');
+            $route->post('storage_file_to_gallery', 'CompanyController@moveTempFileGallery');
         });
 
         $route->group(['prefix' => 'notifications'], function ($route) {
