@@ -495,4 +495,6 @@ return [
     'next' => 'Next',
     'google_disk' => 'Google Drive',
     'temporary_space' => 'Temporary Space',
+    'no_webdav_folder' => 'Temporary Space did not created',
+    'we_send_you_creds' => 'Credentials for access to the temporary storage using WebDav protocol'
 ];

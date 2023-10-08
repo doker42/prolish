@@ -11,6 +11,8 @@
 |
 */
 
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 Auth::routes();
@@ -207,6 +209,7 @@ Route::middleware('auth')->group(function($route) {
         $route->group(['prefix' => 'statistics'], function ($route) {
             $route->get('', 'ActivityLogController@index');
             $route->get('numbers', 'ActivityLogController@numbers');
+            $route->post('online', 'ActivityLogController@stubOnline');
         });
 
         // Storage

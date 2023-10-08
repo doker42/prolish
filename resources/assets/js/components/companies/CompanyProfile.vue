@@ -47,9 +47,9 @@
                                         <div class="dropdown-menu">
 
 
-                                            <router-link :to="{name: 'companyEdit', params: {id: company.id}}"
-                                                         class=""><i class="edit_icon"></i>  {{ trans('custom.edit') }}
-                                            </router-link>
+<!--                                            <router-link :to="{name: 'companyEdit', params: {id: company.id}}"-->
+<!--                                                         class=""><i class="edit_icon"></i>  {{ trans('custom.edit') }}-->
+<!--                                            </router-link>-->
 
                                             <a v-if="company.can_delete"
                                                v-on:click.prevent="deleteEntry(company.id)" class="" href="#"><i class="delete_icon"></i>

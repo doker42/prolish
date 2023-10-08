@@ -10,7 +10,6 @@ use App\Domain\User\UserManager;
 use App\Foundation\Bridge\Laravel\UpTrait;
 use App\Mail\CommonEmail;
 use App\Mail\CompanyDelete;
-use App\Mail\VerifyNewEmailMail;
 use App\Models\AdditionalUserCompanies;
 use App\Helpers\NextCloudHelper;
 use App\Models\Company;
@@ -20,7 +19,6 @@ use App\Models\Project;
 use App\Models\ProjectVisibility;
 use App\Models\CompanySubscriptions;
 use App\Models\User;
-use Illuminate\Mail\Message;
 use Sabre\DAV\Client as WebDAVClient;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -298,10 +296,10 @@ class CompanyManager
 
     }
 
-    /*
-         * Crates NextCloud and WebDav directory for the company
-         */
-    public function initiateNextCloud(Company $company, $put_adapter_to_session = false):void
+    /**
+     * Crates NextCloud and WebDav directory for the company
+     */
+    public function initiateNextCloud(Company $company, $put_adapter_to_session = false): array
     {
         $NextCloudHelper = new NextCloudHelper();
         $data = $NextCloudHelper->createTempFolder($company);
@@ -311,12 +309,17 @@ class CompanyManager
             $free_mb_space = $company->membership->size - $company->storage_used;
             $NextCloudHelper->updateTempFolderLimit($company, (int) $free_mb_space);
             $company->save();
+
+            return [
+                'password' => $data['password']
+            ];
         }
-        if (Auth::check() && $put_adapter_to_session){
+        if ($put_adapter_to_session && Auth::check()){
             $this->getWebDavAdapter($company);
         }
+        return [];
     }
-    /*
+    /**
     * Returns company's webDavAdapter
     */
     public function getWebDavAdapter(Company $company):WebDAVAdapter{
@@ -334,15 +337,13 @@ class CompanyManager
             return $adapter;
         }
     }
-    /*
-         * Returns company's temporary files array
-         */
+    /**
+     * Returns company's temporary files array
+     */
     public function getTemporaryFiles(int $company_id):array
     {
-
         if(Company::where('id', $company_id)->count() > 0){
             $webdav = Session::get('web_dav');
-
             if (empty($webdav)){
                 return [];
             }

@@ -17,7 +17,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'tayfun@dvb.lv',
             'password' => bcrypt('secret'),
             'role' => 'super_user',
-            'company_id' => 1
+            'company_id' => 1,
+            'verified' => 1
         ]);
     }
 }

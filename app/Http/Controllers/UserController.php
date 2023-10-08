@@ -96,7 +96,8 @@ class UserController extends Controller
     /**
      * Searches company invites by email.
      *
-     * @return Response
+     * @param Request $request
+     * @return JsonResponse
      */
     public function searchInvite(Request $request):JsonResponse
     {
@@ -116,7 +117,7 @@ class UserController extends Controller
     {
 
         $user = Auth::user();
-        dd($user);
+
         $verify_new_email_request = VerifyNewEmail::where('user_id', $user->id)->first();
         if (!empty($verify_new_email_request)){
             $user->isset_change_email_request = true;
@@ -141,10 +142,10 @@ class UserController extends Controller
         return $user;
     }
 
-    /* Returns users perosnal permissions
+    /** Returns users perosnal permissions
     *
-     *
-     */
+    *
+    */
     public function personalPermissions()
     {
         $user = Auth::user();
@@ -246,7 +247,7 @@ class UserController extends Controller
         return $data;
     }
 
-    /*
+    /**
      * Deletes current user VerifyNewEmail tokens
      */
     public function deleteChangeEmailRequest()
@@ -267,7 +268,7 @@ class UserController extends Controller
         return $data;
     }
 
-    /*
+    /**
      *
      */
     public function verifyNewEmail($token)

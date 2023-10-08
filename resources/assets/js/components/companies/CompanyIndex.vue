@@ -64,11 +64,11 @@
                                                             </button>
                                                             <div class="dropdown-menu">
 
-                                                                <a v-on:click.prevent="deleteVisibility(company.id, index)"
-                                                                   v-if="!company.is_member && !allowedDisplay('all') "><i class="leave_icon"></i>{{ trans('custom.leave') }}</a>
-                                                                <router-link :to="{name: 'companyEdit', params: {id: company.id}}" v-if="allowedDisplay('all') || allowedDisplay('company_edit', 'company', company.id)"
-                                                                             class=""><i class="edit_icon"></i> {{ trans('custom.edit') }}
-                                                                </router-link>
+<!--                                                                <a v-on:click.prevent="deleteVisibility(company.id, index)"-->
+<!--                                                                   v-if="!company.is_member && !allowedDisplay('all') "><i class="leave_icon"></i>{{ trans('custom.leave') }}</a>-->
+<!--                                                                <router-link :to="{name: 'companyEdit', params: {id: company.id}}" v-if="allowedDisplay('all') || allowedDisplay('company_edit', 'company', company.id)"-->
+<!--                                                                             class=""><i class="edit_icon"></i> {{ trans('custom.edit') }}-->
+<!--                                                                </router-link>-->
 
                                                                 <a v-if="company.can_delete"
                                                                    v-on:click.prevent="deleteEntry(company.id)" class="" href="#"><i class="delete_icon"></i>

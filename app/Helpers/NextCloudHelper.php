@@ -31,21 +31,23 @@ class NextCloudHelper
 
     /**
      * Creates folder in the NextCloud for the company
+     * @param Company $company
+     * @return array|void
      */
-    public function createTempFolder(Company $company): array
+    public function createTempFolder(Company $company)
     {
 	
         try {
-             $data = $this->_api->getUserList();
-                $pass = $this->_generateRandomPassword();
-                $data = $this->_api->createUser($company->temporary_folder, $pass);
-                if ($data['success']) {
-                    return [
-                        'result' => true,
-                        'login' => $company->temporary_folder,
-                        'password' => $pass,
-                        'webDAV' => env('NEXTCLOUD_API_URL', 'http://localhost') . '/remote.php/dav/files/' . $company->temporary_folder . '/',
-                    ];
+            $data = $this->_api->getUserList();
+            $pass = $this->_generateRandomPassword();
+            $data = $this->_api->createUser($company->temporary_folder, $pass);
+            if ($data['success']) {
+                return [
+                    'result'   => true,
+                    'login'    => $company->temporary_folder,
+                    'password' => $pass,
+                    'webDAV'   => env('NEXTCLOUD_API_URL', 'http://localhost') . '/remote.php/dav/files/' . $company->temporary_folder . '/',
+                ];
 
             }
         } catch (\Exception $e) {
@@ -69,7 +71,7 @@ class NextCloudHelper
             return $this->createTempFolder($company);
 
         } catch (\Exception $e) {
-            [
+            return [
                 'result' => false,
                 'description' => $e->getMessage(),
             ];

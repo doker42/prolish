@@ -71,4 +71,13 @@ class ActivityLogController extends Controller
             'income' => number_format($income, 2, ".", "")
         ];
     }
+
+    public function stubOnline()
+    {
+        return response()->json([
+            'data' => [],
+            'result' => true,
+            'message' => 'Ok',
+        ]);
+    }
 }

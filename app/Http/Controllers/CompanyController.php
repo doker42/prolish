@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Company\CompanyManager;
+use App\Jobs\CompanyStorageCreateJob;
 use App\Jobs\CopyProject;
 use App\Mail\AdminNotification;
 use App\Mail\TrialNotification;
 use App\Mail\CompanyVerification;
 use App\Models\AdditionalUserCompanies;
 use App\Models\Company;
-use App\Models\EmployeesNumber;
 use App\Models\Industry;
 use App\Models\Invitation;
 use App\Models\ProjectVisibility;
@@ -17,7 +17,6 @@ use App\Models\Specialization;
 use App\Models\User;
 use App\Models\UserSettings;
 use Carbon\Carbon;
-use http\Env\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -52,9 +51,10 @@ class CompanyController extends Controller
             return Company::whereIn('id', $companies)->orWhereIn('id', $additional_companies)->with('parent', 'membership')->orderBy('title')->get();
         }
     }
-    /*
-        * Returns filtered files from a temp storage by a current company by a selected order
-        */
+
+    /**
+    * Returns filtered files from a temp storage by a current company by a selected order
+    */
     public function indexTempFiles(Request $request)
     {
         //$nextcloud = new NextCloudHelper();
@@ -80,11 +80,15 @@ class CompanyController extends Controller
         //dd(Session::all());
 
         $webdav = Company::manager()->getWebDavAdapter(Auth::user()->company);
+
         if (!empty($webdav)) {
-            try{
+
+            try {
+
                 $files_list = Company::manager()->getTemporaryFiles(Auth::user()->company_id);
 
             } catch (\Exception $e){
+
                 return response()->json(['errors'=>$e->getMessage()], 403);
             }
 
@@ -103,6 +107,7 @@ class CompanyController extends Controller
             return response()->json(['errors'=>trans('custom.no_webdav_folder')], 403);
         }
     }
+
     /**
      * Shows full list of verified companies.
      *
@@ -115,9 +120,11 @@ class CompanyController extends Controller
             $query->orWhere('active_until', '>', \Illuminate\Support\Carbon::now());
         })->get();
     }
-    /*
-        * Returns current company's temporary storage credentials
-        */
+
+
+    /**
+    * Returns current company's temporary storage credentials
+    */
     public function getTempStorageCredentials() {
         return response()->json([
             'result' => true,
@@ -154,7 +161,6 @@ class CompanyController extends Controller
     /**
      * Returns company list values
      *
-     * @return Response
      */
     public function listValues(){
 
@@ -199,8 +205,18 @@ class CompanyController extends Controller
         $company = Company::create($request->all());
         $company->specializations()->attach($request->get('specialization'));
 
+        CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
 
-        if(empty($users_own_company)){
+
+//        try {
+//            Company::manager()->initiateNextCloud($company, true);
+//            Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
+//
+//        } catch (\Exception $e) {
+//            Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
+//        }
+
+        if (empty($users_own_company)){
             $current_role = $user->role;
             $current_company_id = $user->company_id;
             AdditionalUserCompanies::create([
@@ -273,7 +289,7 @@ class CompanyController extends Controller
         return $company;
     }
 
-    /*
+    /**
      * Sends verification request to superadmin.
      *
      */
@@ -302,7 +318,7 @@ class CompanyController extends Controller
         return ['message' => 'success'];
     }
 
-    /*
+    /**
     * Sends message to the company's owner.
     *
     */
@@ -494,15 +510,31 @@ class CompanyController extends Controller
                     'role' => $role
                 ]);
             }
+
+            $company = Company::find($id);
+
             Mail::to($request->get('email'))->send(new InviteToCompanyNotify([
                 'email' => $request->get('email'),
-                'company_title' => Company::find($id)->title,
+                'company_title' => $company->title,
                 'company_id' => $id,
                 'sender_name' => Auth::user()->name,
                 'sender_email' => Auth::user()->email,
                 'lang'=> $user->locale,
                 'role' => $role,
-                'type' => 'existing_user']));
+                'type' => 'existing_user',
+            ]));
+
+            CompanyStorageCreateJob::dispatch($user, $company)->delay(15);
+
+//            try {
+//                Company::manager()->initiateNextCloud($company, true);
+//
+//                Mail::to($user->email)->send(new \App\Mail\CompanyStorageInviteMail($user,$company));
+//
+//            } catch (\Exception $e) {
+//                Log::info('Failed to create NEXTCloud account ' . $e->getMessage());
+//            }
+
         } else {
 
             Invitation::create([
@@ -546,7 +578,8 @@ class CompanyController extends Controller
     /**
      * Searches companies by keyword.
      *
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function searchCompany(Request $request){
 
