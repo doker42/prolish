@@ -109,6 +109,11 @@ class UploadController extends Controller
      */
     protected function saveFile(UploadedFile $file, $project_id, $company_storage_id, $index)
     {
+        ini_set('upload_max_filesize', '30240M');
+        ini_set('post_max_size', '30240M');
+        ini_set('max_input_time', 60000);
+        ini_set('max_execution_time', 60000);
+        
         $mime = str_replace('/', '-', $file->getMimeType());
 
         $filename = str_replace(' ', '_', $file->getClientOriginalName());
