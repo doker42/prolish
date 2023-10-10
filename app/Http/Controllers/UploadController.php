@@ -113,7 +113,7 @@ class UploadController extends Controller
         ini_set('post_max_size', '30240M');
         ini_set('max_input_time', 60000);
         ini_set('max_execution_time', 60000);
-        
+
         $mime = str_replace('/', '-', $file->getMimeType());
 
         $filename = str_replace(' ', '_', $file->getClientOriginalName());
@@ -146,10 +146,10 @@ class UploadController extends Controller
             'data' => $project_id,
         ]);
 
-//        $dir = public_path() . '/chunks/';
-//        if (File::isDirectory($dir)) {
-//            File::cleanDirectory($dir);
-//        }
+        $dir = public_path() . '/chunks/';
+        if (File::isDirectory($dir)) {
+            File::cleanDirectory($dir);
+        }
 
         return response()->json([
             'path' => $filepath,
