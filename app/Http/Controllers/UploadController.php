@@ -141,10 +141,10 @@ class UploadController extends Controller
             'data' => $project_id,
         ]);
 
-        $dir = public_path() . '/chunks/';
-        if (File::isDirectory($dir)) {
-            File::cleanDirectory($dir);
-        }
+//        $dir = public_path() . '/chunks/';
+//        if (File::isDirectory($dir)) {
+//            File::cleanDirectory($dir);
+//        }
 
         return response()->json([
             'path' => $filepath,
