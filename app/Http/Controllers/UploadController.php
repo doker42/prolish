@@ -6,8 +6,9 @@ use App\Models\Company;
 use App\Models\Membership;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use League\Flysystem\Config;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
@@ -66,7 +67,7 @@ class UploadController extends Controller
             return $this->saveFile(
                 $save->getFile(),
                 $request->get('project_id', 0),
-                $request->get('temp_storage', false)?$company_id:false,
+                $request->get('temp_storage', false) ? $company_id : false,
                 $request->get('index', 0)
             );
         }
@@ -101,9 +102,9 @@ class UploadController extends Controller
      * Saves the file
      *
      * @param UploadedFile $file
-     * @param integer $project_id
-     * @param integer $index
-     *
+     * @param $project_id
+     * @param $company_storage_id
+     * @param $index
      * @return \Illuminate\Http\JsonResponse
      */
     protected function saveFile(UploadedFile $file, $project_id, $company_storage_id, $index)
@@ -121,7 +122,8 @@ class UploadController extends Controller
             $config['password'] = Auth::user()->company->storage_pass;
             $config['pathPrefix'] ='remote.php/dav/files/'.Auth::user()->company->temporary_folder;
             $config_syst = new Config($config);
-            $webdav->write($filename, $file, $config_syst);
+            $contents = file_get_contents($file);
+            $webdav->write($filename, $contents, $config_syst);
             $filepath = $filename;
         } else {
             $filepath = 'uploads/documents/' . $project_id . '/';
@@ -138,6 +140,11 @@ class UploadController extends Controller
             'action' => 'file_uploaded',
             'data' => $project_id,
         ]);
+
+        $dir = public_path() . '/chunks/';
+        if (File::isDirectory($dir)) {
+            File::cleanDirectory($dir);
+        }
 
         return response()->json([
             'path' => $filepath,

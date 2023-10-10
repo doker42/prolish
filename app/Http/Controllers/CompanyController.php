@@ -623,19 +623,22 @@ class CompanyController extends Controller
             if (Storage::disk('local')->exists($filepath.$filename)) {
                 $filename = pathinfo($filename, PATHINFO_FILENAME) . '-' . uniqid() . '.' . pathinfo($path, PATHINFO_EXTENSION);
             }
+
             Storage::disk('local')->put($filepath . $filename, $webdav->read($path)['contents']);
-            if($delete_source){
+
+            if ($delete_source){
                 $webdav->delete($path);
             }
+
             return response()->json([
                 'result' => true,
                 'new_file' => $filepath.$filename,
             ]);
 
         } else {
+
             return response()->json(['errors'=>trans('custom.error_occured')], 403);
         }
-
     }
 
 
