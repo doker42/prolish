@@ -14,10 +14,114 @@
 @section('cust_styles')
     <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet">
     <style>
+        .card-body {
+            min-height: 622px !important;
+            height: 100%;
+            position: relative;
+        }
         .notify-company{
             font-size: 80%;
             color: orange;
             display: none;
+        }
+        .lds-wrapper {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          justify-content: center;
+          align-items: center;
+          color: #298494;
+          display: none;
+        }
+        .lds-roller {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+        }
+        .lds-roller div {
+          animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+          transform-origin: 40px 40px;
+        }
+        .lds-roller div:after {
+          content: " ";
+          display: block;
+          position: absolute;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #298494;
+          margin: -4px 0 0 -4px;
+        }
+        .lds-roller div:nth-child(1) {
+          animation-delay: -0.036s;
+        }
+        .lds-roller div:nth-child(1):after {
+          top: 63px;
+          left: 63px;
+        }
+        .lds-roller div:nth-child(2) {
+          animation-delay: -0.072s;
+        }
+        .lds-roller div:nth-child(2):after {
+          top: 68px;
+          left: 56px;
+        }
+        .lds-roller div:nth-child(3) {
+          animation-delay: -0.108s;
+        }
+        .lds-roller div:nth-child(3):after {
+          top: 71px;
+          left: 48px;
+        }
+        .lds-roller div:nth-child(4) {
+          animation-delay: -0.144s;
+        }
+        .lds-roller div:nth-child(4):after {
+          top: 72px;
+          left: 40px;
+        }
+        .lds-roller div:nth-child(5) {
+          animation-delay: -0.18s;
+        }
+        .lds-roller div:nth-child(5):after {
+          top: 71px;
+          left: 32px;
+        }
+        .lds-roller div:nth-child(6) {
+          animation-delay: -0.216s;
+        }
+        .lds-roller div:nth-child(6):after {
+          top: 68px;
+          left: 24px;
+        }
+        .lds-roller div:nth-child(7) {
+          animation-delay: -0.252s;
+        }
+        .lds-roller div:nth-child(7):after {
+          top: 63px;
+          left: 17px;
+        }
+        .lds-roller div:nth-child(8) {
+          animation-delay: -0.288s;
+        }
+        .lds-roller div:nth-child(8):after {
+          top: 56px;
+          left: 12px;
+        }
+        @keyframes lds-roller {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
     </style>
 @endsection
@@ -30,6 +134,10 @@
 
                 <div class="card-body pl-5 pr-5">
                     <div class="h3 font-weight-bold text-center mb-3 mt-2">{{ __('custom.register') }}</div>
+                    <div class="lds-wrapper">
+                      <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                      Please wait, the data is processing
+                    </div>
                     <form method="POST" action="{{ route('register') }}" aria-label="{{ __('custom.register')  }}" class="ml-5 mr-5">
                         @csrf
 
@@ -152,3 +260,15 @@
 </div>
 
 @endsection
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const ldsRoller = document.querySelector('.lds-wrapper');
+
+    form.addEventListener('submit', function (e) {
+      form.style.visibility = 'hidden';
+      ldsRoller.style.display = 'flex';
+    });
+  });
+</script>
