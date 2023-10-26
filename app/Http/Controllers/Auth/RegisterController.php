@@ -127,6 +127,7 @@ class RegisterController extends Controller
                 'title' => $data['company'],
                 'status' => 1,
                 'storage_used' => 0,
+                'verified' => 1,
                 'logo' => '/images/450x450.png',
                 'parent_company' => null,
                 'membership_id' => $membership->id,

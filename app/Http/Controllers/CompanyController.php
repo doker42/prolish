@@ -204,6 +204,7 @@ class CompanyController extends Controller
 
         $request->request->set('owner_id', $user->id);
         $request->request->set('storage_used', 0);
+        $request->request->set('verified', 1);
 
         $company = Company::create($request->all());
         $company->specializations()->attach($request->get('specialization'));
