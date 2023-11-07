@@ -15,5 +15,6 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth')->group(function($route) {
 
+    //todo
 
 });
