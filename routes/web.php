@@ -183,6 +183,7 @@ Route::middleware('auth')->group(function($route) {
             $route->get('temp_files', 'CompanyController@indexTempFiles');
             $route->post('storage_file_to_project', 'CompanyController@moveTempFile');
             $route->post('storage_file_to_gallery', 'CompanyController@moveTempFileGallery');
+            $route->post('delete_storage_file', 'CompanyController@mdeleteTempFile');
         });
 
         $route->group(['prefix' => 'notifications'], function ($route) {
