@@ -329,7 +329,8 @@ class CompanyManager
             $config['baseUri'] = env('NEXTCLOUD_API_URL');
             $config['userName'] = $company->temporary_folder;
             $config['password'] = $company->storage_pass;
-            $config['pathPrefix'] ='remote.php/dav/files/'.$company->temporary_folder;
+            $subfix = env('NEXTCLOUD_API_SUBFIX');
+            $config['pathPrefix'] = $subfix . '/' . 'remote.php/dav/files/'.$company->temporary_folder;
             $client = new WebDAVClient($config);
             $adapter = new WebDAVAdapter($client, $config['pathPrefix'], $config);
             Session::put('web_dav', $adapter);
